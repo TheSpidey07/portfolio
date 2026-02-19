@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Customize the page title -->
+    <title>Unquizable | Cosmic Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: transparent;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .hero-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0a1a, #1a1a2e);
+        }
+
+        .cursor, .cursor-follower, .cursor-glow {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .cursor {
+            width: 10px;
+            height: 10px;
+            background: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-follower {
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(0, 255, 136, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .cursor-glow {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.4) 0%, transparent 70%);
+            transition: transform 0.5s ease;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .nav-orb {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #00ff88, #00b4d8);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.7);
+        }
+
+        .nav-orb:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.9);
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            background: rgba(10, 10, 26, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .nav-menu.active {
+            display: flex;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+            transform: translateX(5px);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 5%;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 900px;
+            background: rgba(10, 10, 26, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .typing-text h1 {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.7);
+        }
+
+        .highlight {
+            color: #00ff88;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        .typing-wrapper {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .cursor-blink {
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .cta-buttons .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #00ff88, #00b4d8);
+            color: #0a0a1a;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .cta-buttons .btn:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 7px 25px rgba(0, 255, 136, 0.8);
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 80px 0 50px;
+        }
+
+        .section-title h2 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #00ff88, #00b4d8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 15px;
+        }
+
+        section {
+            position: relative;
+            z-index: 1;
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(10px);
+            margin: 30px 5%;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .about-content {
+            display: flex;
+            gap: 50px;
+            padding: 0 5%;
+            max-width: 1300px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-description p {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .about-highlights {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .highlight-item {
+            text-align: center;
+            flex: 1;
+            max-width: 220px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .highlight-item:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 7px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .highlight-item i {
+            font-size: 2.5rem;
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            justify-content: center;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 7px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .stat-icon i {
+            font-size: 2.5rem;
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+
+        .number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .label {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .about-canvas {
+            flex: 1;
+            max-width: 450px;
+            height: 450px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            padding: 0 5%;
+            max-width: 1300px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 7px 25px rgba(0, 255, 136, 0.5);
+        }
+
+        .project-canvas {
+            width: 100%;
+            height: 220px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 255, 136, 0.4), rgba(0, 180, 216, 0.4));
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-links a {
+            color: #fff;
+            font-size: 1.8rem;
+            margin: 0 15px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .project-links a:hover {
+            transform: scale(1.3);
+            color: #00ff88;
+        }
+
+        .project-info {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .project-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .project-tech {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .project-tech span {
+            background: rgba(0, 255, 136, 0.3);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            padding: 0 5%;
+            max-width: 1300px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        .skill-category {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-7px);
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .skill-info {
+            flex: 1;
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(45deg, #00ff88, #00b4d8);
+            width: 0;
+            transition: width 1.2s ease;
+        }
+
+        .skill-icon i {
+            font-size: 2.5rem;
+            color: #00ff88;
+        }
+
+        .skill-orb {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle, #00ff88, #00b4d8);
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .skill-item:hover .skill-orb {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .services-grid, .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 0 5%;
+            max-width: 1300px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        .service-card, .achievement-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover, .achievement-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 7px 25px rgba(0, 255, 136, 0.5);
+        }
+
+        .service-icon i, .achievement-icon i {
+            font-size: 2.5rem;
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            background: rgba(10, 10, 26, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            text-align: center;
+            margin-top: 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 15px;
+        }
+
+        .social-links a {
+            color: #fff;
+            font-size: 1.8rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #00ff88;
+            transform: scale(1.3);
+        }
+
+        .timeline {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            position: relative;
+        }
+
+        .timeline-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 12px;
+            width: 45%;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.07);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: 70px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 70px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #00ff88, #00b4d8);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            .nav-orb {
+                width: 50px;
+                height: 50px;
+            }
+
+            .nav-menu {
+                top: 70px;
+                right: 10px;
+                padding: 20px;
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .hero-content {
+                padding: 25px;
+            }
+
+            .about-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .about-canvas {
+                max-width: 100%;
+                height: 350px;
+            }
+
+            .project-canvas {
+                height: 180px;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .timeline-content {
+                width: 100%;
+                margin: 0 0 25px 50px;
+            }
+
+            .timeline-dot {
+                left: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="hero-canvas" class="hero-canvas"></canvas>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    <div class="cursor-glow"></div>
+
+    <nav class="navbar">
+        <div class="nav-orb" role="button" aria-label="Toggle navigation menu"></div>
+        <div class="nav-menu">
+            <!-- Customize the navigation links and their destinations -->
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
+            <a href="#services">Services</a>
+            <a href="#achievements">Achievements</a>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="typing-text">
+                <!-- Customize the hero title text -->
+                <h1>Hello, I'm <span class="highlight">Unquizable</span></h1>
+                <div class="typing-wrapper">
+                    <span class="typing"></span>
+                    <span class="cursor-blink">|</span>
+                </div>
+            </div>
+            <!-- Customize the hero description text -->
+            <p class="hero-description">Crafting cosmic digital experiences through innovative code and interstellar design.</p>
+            <div class="cta-buttons">
+                <!-- Customize the CTA button text and link -->
+                <a href="#projects" class="btn primary" role="button">Explore Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="section-title">
+            <!-- Customize the section title and subtitle -->
+            <h2 class="gradient-text">About Me</h2>
+            <p class="section-subtitle">My cosmic journey</p>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <div class="about-description">
+                    <!-- Customize the about description -->
+                    <p>I'm a visionary developer crafting immersive digital realms. With mastery over modern tech, I weave innovation and elegance into every project.</p>
+                    <div class="about-highlights">
+                        <!-- Customize the highlight items -->
+                        <div class="highlight-item">
+                            <i class="fas fa-code"></i>
+                            <span>Quantum Code</span>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-paint-brush"></i>
+                            <span>Holographic Design</span>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-rocket"></i>
+                            <span>Stellar Performance</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-container">
+                    <!-- Customize the stats -->
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="number" data-target="3">0</span>
+                            <span class="label">Years Experience</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="number" data-target="50">0</span>
+                            <span class="label">Projects Completed</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="number" data-target="20">0</span>
+                            <span class="label">Happy Clients</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <canvas id="about-canvas" class="about-canvas"></canvas>
+        </div>
+    </section>
+
+    <section id="experience" class="experience">
+        <div class="section-title">
+            <!-- Customize the section title and subtitle -->
+            <h2 class="gradient-text">Experience</h2>
+            <p class="section-subtitle">My galactic path</p>
+        </div>
+        <div class="timeline">
+            <canvas id="timeline-canvas" class="timeline-canvas"></canvas>
+            <!-- Customize the timeline items -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Job Title 1</h3>
+                    <p class="company">Company Name</p>
+                    <p class="period">Year Range</p>
+                    <p class="description">Description of role.</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Job Title 2</h3>
+                    <p class="company">Company Name</p>
+                    <p class="period">Year Range</p>
+                    <p class="description">Description of role.</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Job Title 3</h3>
+                    <p class="company">Company Name</p>
+                    <p class="period">Year Range</p>
+                    <p class="description">Description of role.</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <div class="section-title">
+            <!-- Customize the section title and subtitle -->
+            <h2 class="gradient-text">Featured Projects</h2>
+            <p class="section-subtitle">My cosmic creations</p>
+        </div>
+        <div class="projects-grid">
+            <!-- Customize project details: title, description, link, and technologies -->
+            <div class="project-card">
+                <canvas class="project-canvas" data-id="project1"></canvas>
+                <div class="project-overlay">
+                    <div class="project-links">
+                        <!-- Customize the project link and aria-label -->
+                        <a href="link-here" class="project-link" aria-label="descriptions"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Project 1</h3>
+                    <p class="caption">Description of project 1.</p>
+                    <div class="project-tech">
+                        <span>Tech 1</span>
+                        <span class="highlight">Tech 2</span>
+                        <span>Tech 3</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <canvas class="project-canvas" data-id="project2"></canvas>
+                <div class="project-overlay">
+                    <div class="project-links">
+                        <!-- Customize the project link and aria-label -->
+                        <a href="link-here" class="project-link" aria-label="descriptions"><i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Project 2</h3>
+                    <p>Description of project 2.</p>
+                    <div class="project-tech">
+                        <span>Tech 1</span>
+                        <span class="highlight">Tech 2</span>
+                        <span>Tech 3</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <canvas class="project-canvas" data-id="project3"></canvas>
+                <div class="project-overlay">
+                    <div class="project-links">
+                        <!-- Customize the project link and aria-label -->
+                        <a href="link-here" class="project-link" aria-label="descriptions"><i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Project 3</h3>
+                    <p>Description of project 3.</p>
+                    <div class="project-tech">
+                        <span>Tech 1</span>
+                        <span class="highlight">Tech 2</span>
+                        <span>Tech 3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills">
+        <div class="section-title">
+            <!-- Customize the section title and subtitle -->
+            <h2 class="gradient-text">Skills & Expertise</h2>
+            <p class="section-subtitle">My technical constellation</p>
+        </div>
+        <div class="skills-container">
+            <div class="skills-grid">
+                <!-- Customize the skill categories and items -->
+                <div class="skill-category">
+                    <h3>Frontend Development</h3>
+                    <div class="skill-items">
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Skill 1">
+                            <div class="skill-info">
+                                <span>Skill 1</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="95"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fab fa-html5"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Skill 2">
+                            <div class="skill-info">
+                                <span>Skill 2</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="90"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fab fa-css3-alt"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Skill 3">
+                            <div class="skill-info">
+                                <span>Skill 3</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="85"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fab fa-js"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Skill 4">
+                            <div class="skill-info">
+                                <span>Skill 4</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="80"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fab fa-react"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Backend Development</h3>
+                    <div class="skill-items">
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Skill 5">
+                            <div class="skill-info">
+                                <span>Skill 5</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="85"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fab fa-node-js"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Skill 6">
+                            <div class="skill-info">
+                                <span>Skill 6</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="80"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fab fa-python"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Skill 7">
+                            <div class="skill-info">
+                                <span>Skill 7</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="75"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fab fa-php"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Skill 8">
+                            <div class="skill-info">
+                                <span>Skill 8</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="85"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Tools & Technologies</h3>
+                    <div class="skill-items">
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Tool 1">
+                            <div class="skill-info">
+                                <span>Tool 1</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="90"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fab fa-git-alt"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Tool 2">
+                            <div class="skill-info">
+                                <span>Tool 2</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="75"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fab fa-docker"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Tool 3">
+                            <div class="skill-info">
+                                <span>Tool 3</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="70"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fab fa-aws"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                        <div class="skill-item" role="button" tabindex="0" aria-label="Tool 4">
+                            <div class="skill-info">
+                                <span>Tool 4</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="80"></div>
+                                </div>
+                            </div>
+                            <div class="skill-icon">
+                                <i class="fab fa-linux"></i>
+                            </div>
+                            <div class="skill-orb"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="section-title">
+            <!-- Customize the section title and subtitle -->
+            <h2 class="gradient-text">Services</h2>
+            <p class="section-subtitle">My cosmic offerings</p>
+        </div>
+        <div class="services-grid">
+            <!-- Customize the services -->
+            <div class="service-card" role="button" tabindex="0">
+                <div class="service-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Service 1</h3>
+                <p>Description of service 1.</p>
+            </div>
+            <div class="service-card" role="button" tabindex="0">
+                <div class="service-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Service 2</h3>
+                <p>Description of service 2.</p>
+            </div>
+            <div class="service-card" role="button" tabindex="0">
+                <div class="service-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3>Service 3</h3>
+                <p>Description of service 3.</p>
+            </div>
+            <div class="service-card" role="button" tabindex="0">
+                <div class="service-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3>Service 4</h3>
+                <p>Description of service 4.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements" class="achievements">
+        <div class="section-title">
+            <!-- Customize the section title and subtitle -->
+            <h2>Highlights</h3>
+            <p class="section-subtitle">My stellar milestones</p>
+        </div>
+        <div class="achievements-grid">
+            <!-- Customize the achievements -->
+            <div class="achievement-card" role="button" tabindex="0">
+                <div class="achievement-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3>Achievement 1</h3>
+                <p>Description of achievement 1.</p>
+            </div>
+            <div class="achievement-card" role="button" tabindex="0">
+                <div class="achievement-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3>Achievement 2</h3>
+                <p>Description of achievement 2></p>
+            </div>
+            <div class="achievement-card" role="button" tabindex="0">
+                <div class="achievement-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3>Achievement 3</h3>
+                <p>Description of achievement 3.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="social-links">
+                <!-- Customize the social media links and icons -->
+                <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+            <!-- Customize the footer text and year -->
+            <p>© 2025 Cosmic Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        document.addEventListener('click', () => {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }, { once: true });
+
+        function playHoverSound() {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(1000, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function playClickSound() {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = 'square';
+            oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.2);
+        }
+
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+        const glow = document.querySelector('.cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+            gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
+            gsap.to(glow, { x: e.clientX, y: e.clientY, duration: 0.5 });
+        });
+
+        const navOrb = document.querySelector('.nav-orb');
+        const navMenu = document.querySelector('.nav-menu');
+        navOrb.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            playClickSound();
+            gsap.to(navOrb, {
+                scale: navMenu.classList.contains('active') ? 1.2 : 1,
+                duration: 0.3,
+                ease: 'power3.out'
+            });
+        });
+
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('mouseover', playHoverSound);
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                playClickSound();
+            });
+        });
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('hero-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const geometry = new THREE.IcosahedronGeometry(12, 4);
+        const material = new THREE.ShaderMaterial({
+            vertexShader: `
+                varying vec3 vNormal;
+                void main() {
+                    vNormal = normal;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float time;
+                varying vec3 vNormal;
+                void main() {
+                    vec3 col = 0.5 + 0.5 * cos(time + vNormal * 4.0);
+                    gl_FragColor = vec4(col * vec3(0.0, 1.0, 0.6), 0.4);
+                }
+            `,
+            uniforms: { time: { value: 0 } },
+            wireframe: true,
+            transparent: true
+        });
+        const polyhedron = new THREE.Mesh(geometry, material);
+        scene.add(polyhedron);
+
+        const nebulaGeometry = new THREE.BufferGeometry();
+        const nebulaCount = 5000;
+        const positions = new Float32Array(nebulaCount * 3);
+        const velocities = new Float32Array(nebulaCount * 3);
+        for (let i = 0; i < nebulaCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 300;
+            positions[i + 1] = (Math.random() - 0.5) * 300;
+            positions[i + 2] = (Math.random() - 0.5) * 300;
+            velocities[i] = (Math.random() - 0.5) * 0.02;
+            velocities[i + 1] = (Math.random() - 0.5) * 0.02;
+            velocities[i + 2] = (Math.random() - 0.5) * 0.02;
+        }
+        nebulaGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const nebulaMaterial = new THREE.PointsMaterial({ 
+            color: 0x00ff88, 
+            size: 0.3, 
+            transparent: true,
+            blending: THREE.AdditiveBlending
+        });
+        const nebula = new THREE.Points(nebulaGeometry, nebulaMaterial);
+        scene.add(nebula);
+
+        const light = new THREE.PointLight(0xffffff, 3);
+        light.position.set(30, 30, 30);
+        scene.add(light);
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+        scene.add(ambientLight);
+        camera.position.z = 60;
+
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            polyhedron.rotation.x += 0.004;
+            polyhedron.rotation.y += 0.004;
+            material.uniforms.time.value += 0.03;
+            nebula.rotation.y += 0.001;
+            const positions = nebula.geometry.attributes.position.array;
+            for (let i = 0; i < nebulaCount * 3; i += 3) {
+                positions[i] += velocities[i];
+                positions[i + 1] += velocities[i + 1];
+                positions[i + 2] += velocities[i + 2];
+                if (Math.abs(positions[i]) > 150) velocities[i] *= -1;
+                if (Math.abs(positions[i + 1]) > 150) velocities[i + 1] *= -1;
+                if (Math.abs(positions[i + 2]) > 150) velocities[i + 2] *= -1;
+            }
+            nebula.geometry.attributes.position.needsUpdate = true;
+            camera.position.x += (mouseX * 15 - camera.position.x) * 0.05;
+            camera.position.y += (mouseY * 15 - camera.position.y) * 0.05;
+            camera.lookAt(0, 0,  renderer);
+        }
+        animate();
+
+        const aboutScene = new THREE.Scene();
+        const aboutCamera = new THREE.PerspectiveCamera(50, 450 / 450, 0.1, 1000);
+        const aboutRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('about-canvas'), alpha: true });
+        aboutRenderer.setSize(450, 450);
+
+        const avatarGeometry = new THREE.DodecahedronGeometry(6, 0);
+        const avatarMaterial = new THREE.ShaderMaterial({
+            vertexShader: `
+                varying vec2 vUv;
+                varying vec3 vNormal;
+                void main() {
+                    vUv = uv;
+                    vNormal = normal;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float time;
+                varying vec2 vUv;
+                varying vec3 vNormal;
+                void main() {
+                    vec3 col = vec3(0.0, 1.0, 0.6) * (0.5 + 0.5 * cos(time + vUv.y * 6.0 + vNormal.x));
+                    gl_FragColor = vec4(col, 0.6);
+                }
+            `,
+            uniforms: { time: { value: 0 } },
+            transparent: true
+        });
+        const avatar = new THREE.Mesh(avatarGeometry, avatarMaterial);
+        aboutScene.add(avatar);
+
+        const nodes = new THREE.Group();
+        for (let i = 0; i < 15; i++) {
+            const node = new THREE.Mesh(
+                new THREE.SphereGeometry(0.4, 24, 24),
+                new THREE.MeshBasicMaterial({ color: 0x00ff88 })
+            );
+            const angle = (i / 15) * Math.PI * 2;
+            const radius = 10;
+            node.position.set(Math.cos(angle) * radius, i * 0.6 - 4, Math.sin(angle) * radius);
+            nodes.add(node);
+        }
+        aboutScene.add(nodes);
+        const aboutLight = new THREE.PointLight(0xffffff, 2);
+        aboutLight.position.set(20, 20, 20);
+        aboutScene.add(aboutLight);
+        aboutCamera.position.set(0, 0, 18);
+
+        function animateAbout() {
+            requestAnimationFrame(animateAbout);
+            avatar.rotation.y += 0.008;
+            avatarMaterial.uniforms.time.value += 0.03;
+            nodes.rotation.y += 0.004;
+            aboutRenderer.render(aboutScene, aboutCamera);
+        }
+        animateAbout();
+
+        const projectCanvases = Array.from(document.querySelectorAll('.project-canvas'));
+        projectCanvases.forEach(canvas => {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / 220, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+            renderer.setSize(canvas.clientWidth, 220);
+
+            const geometry = new THREE.TorusKnotGeometry(1.5, 0.4, 100, 16);
+            const material = new THREE.ShaderMaterial({
+                vertexShader: `
+                    varying vec2 vUv;
+                    varying vec3 vNormal;
+                    void main() {
+                        vUv = uv;
+                        vNormal = normal;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                    }
+                `,
+                fragmentShader: `
+                    uniform float time;
+                    varying vec2 vUv;
+                    varying vec3 vNormal;
+                    void main() {
+                        vec3 col = vec3(0.0, 1.0, 0.6) * (0.5 + 0.5 * sin(time + vUv.y * 4.0 + vNormal.z));
+                        gl_FragColor = vec4(col, 0.9);
+                    }
+                `,
+                uniforms: { time: { value: 0 } },
+                wireframe: true
+            });
+            const torusKnot = new THREE.Mesh(geometry, material);
+            scene.add(torusKnot);
+
+            const particles = new THREE.Group();
+            for (let i = 0; i < 50; i++) {
+                const particle = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.1, 8, 8),
+                    new THREE.MeshBasicMaterial({ color: 0x00ff88 })
+                );
+                particle.position.set(
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5
+                );
+                particles.add(particle);
+            }
+            scene.add(particles);
+
+            const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+            const pointLight = new THREE.PointLight(0xffffff, 1.5);
+            pointLight.position.set(10, 10, 10);
+            scene.add(ambient, pointLight);
+            camera.position.z = 6;
+
+            canvas.addEventListener('mouseover', playHoverSound);
+            canvas.addEventListener('click', playClickSound);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                torusKnot.rotation.x += 0.008;
+                torusKnot.rotation.y += 0.008;
+                material.uniforms.time.value += 0.03;
+                particles.children.forEach(p => {
+                    p.position.y += 0.02;
+                    if (p.position.y > 5) p.position.y -= 10;
+                });
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            gsap.from(torusKnot.rotation, {
+                scrollTrigger: {
+                    trigger: canvas,
+                    start: 'top 80%',
+                    end: 'bottom top',
+                    scrub: 1
+                },
+                y: Math.PI * 2,
+                x: Math.PI * 2,
+                duration: 1
+            });
+
+            canvas.__renderer = renderer;
+            canvas.__sceneCamera = camera;
+        });
+
+        const timelineScene = new THREE.Scene();
+        const timelineCamera = new THREE.PerspectiveCamera(50, window.innerWidth / 400, 0.1, 1000);
+        const timelineRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('timeline-canvas'), alpha: true });
+        timelineRenderer.setSize(window.innerWidth, 400);
+
+        const helixNodes = [];
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach((_, index) => {
+            const node = new THREE.Mesh(
+                new THREE.TetrahedronGeometry(0.4, 0),
+                new THREE.MeshBasicMaterial({ color: 0x00ff88 })
+            );
+            const angle = (index / 3) * Math.PI * 2;
+            const radius = 2.5;
+            node.position.set(radius * Math.cos(angle), -index * 5, radius * Math.sin(angle));
+            helixNodes.push(node);
+            timelineScene.add(node);
+        });
+
+        const helixPositions = [];
+        for (let i = 0; i <= 100; i++) {
+            const t = (i / 100) * Math.PI * 4;
+            const radius = 2.5;
+            helixPositions.push(
+                radius * Math.cos(t),
+                -t * 2.5,
+                radius * Math.sin(t)
+            );
+        };
+        const helixGeometry = new THREE.BufferGeometry();
+        helixGeometry.setAttribute('position', new THREE.Float32BufferAttribute(helixPositions, 3));
+        const helixMaterial = new THREE.LineBasicMaterial({ 
+            color: 0x00ff88, 
+            transparent: true, 
+            opacity: 0.7 
+        });
+        const helix = new THREE.Line(helixGeometry, helixMaterial);
+        timelineScene.add(helix);
+        const timelineLight = new THREE.PointLight(0xffffff, 2);
+        timelineLight.position.set(10, 10, 10);
+        timelineScene.add(timelineLight);
+        timelineCamera.position.set(0, 0, 18);
+
+        function animateTimeline() {
+            requestAnimationFrame(animateTimeline);
+            helixNodes.forEach(node => {
+                node.rotation.y += 0.03;
+                node.scale.setScalar(1 + 0.2 * Math.sin(Date.now() * 0.002));
+            });
+            helix.rotation.y += 0.004;
+            timelineRenderer.render(timelineScene, timelineCamera);
+        }
+        animateTimeline();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            const aboutWidth = window.innerWidth <= 768 ? window.innerWidth * 0.8 : 450;
+            aboutRenderer.setSize(aboutWidth, aboutWidth);
+            aboutCamera.aspect = 1;
+            aboutCamera.updateProjectionMatrix();
+
+            projectCanvases.forEach(canvas => {
+                const renderer = canvas.__renderer;
+                renderer.setSize(canvas.clientWidth, 220);
+                const camera = canvas.__sceneCamera;
+                camera.aspect = canvas.clientWidth / 220;
+                camera.updateProjectionMatrix();
+            });
+
+            timelineRenderer.setSize(window.innerWidth, 400);
+            timelineCamera.aspect = window.innerWidth / 400;
+            timelineCamera.updateProjectionMatrix();
+        });
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from('.hero-content', {
+            opacity: 0,
+            y: 80,
+            duration: 1.2,
+            ease: 'power4.out'
+        });
+
+        gsap.utils.toArray('section').forEach(section => {
+            gsap.from(section, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 0,
+                y: 120,
+                duration: 1.2,
+                ease: 'power4.out'
+            });
+        });
+
+        gsap.utils.toArray('.highlight-item, .stat-item, .project-card, .timeline-content').forEach(item => {
+            gsap.from(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                ease: 'power4.out'
+            });
+        });
+
+        gsap.utils.toArray('.skill-progress').forEach(bar => {
+            gsap.to(bar, {
+                scrollTrigger: {
+                    trigger: bar,
+                    start: 'top 80%'
+                },
+                width: bar.getAttribute('data-progress') + '%',
+                duration: 1.5,
+                ease: 'power4.out'
+            });
+        });
+
+        gsap.utils.toArray('.number').forEach(num => {
+            gsap.to(num, {
+                scrollTrigger: {
+                    trigger: num,
+                    start: 'top 80%'
+                },
+                innerText: num.getAttribute('data-target'),
+                duration: 1.5,
+                ease: 'none',
+                snap: { innerText: 1 },
+                onUpdate: function() {
+                    num.textContent = Math.ceil(this.targets()[0].innerText);
+                }
+            });
+        });
+
+        gsap.utils.toArray('.skill-item, .service-card, .achievement-card').forEach(item => {
+            item.addEventListener('mouseover', () => {
+                playHoverSound();
+                const particles = new THREE.Group();
+                for (let i = 0; i < 15; i++) {
+                    const particle = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.15, 8, 8),
+                        new THREE.MeshBasicMaterial({ color: 0x00ff88 })
+                    );
+                    particle.position.set((Math.random() - 0.5) * 3, (Math.random() - 0.5) * 3, 0);
+                    particles.add(particle);
+                    gsap.to(particle.position, {
+                        x: (Math.random() - 0.5) * 6,
+                        y: (Math.random() - 0.5) * 6,
+                        z: (Math.random() - 0.5) * 6,
+                        duration: 0.7,
+                        ease: 'power3.out',
+                        onComplete: () => particle.remove()
+                    });
+                }
+                scene.add(particles);
+            });
+        });
+
+        const typingText = document.querySelector('.typing');
+        const texts = ['Cosmic Coder', 'Digital Architect', 'Tech Innovator'];
+        let textIndex = 0;
+        let charIndex = 0;
+
+        function type() {
+            if (charIndex < texts[textIndex].length) {
+                typingText.textContent += texts[textIndex][charIndex];
+                charIndex++;
+                setTimeout(type, 80);
+            } else {
+                setTimeout(erase, 2000);
+            }
+        }
+
+        function erase() {
+            if (charIndex > 0) {
+                typingText.textContent = texts[textIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, 40);
+            } else {
+                textIndex = (textIndex + 1) % texts.length;
+                setTimeout(type, 600);
+            }
+        }
+
+        type();
+
+        document.querySelectorAll('.nav-orb, .skill-item, .project-link, .service-card, .achievement-card').forEach(item => {
+            item.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    item.click();
+                    playClickSound();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
